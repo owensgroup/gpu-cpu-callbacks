@@ -1,0 +1,25 @@
+all: main main2 main3 main4
+
+main: Timer.obj cudaCallBackExpand.h cudaCallFunc.h cudaCallbackCoerceArguments.obj cudaCallbackConstants.h cudaCallbackData.h cudaCreateHostFunc.obj cudaHostFunction.h cudaParamCreate.h cudaParamErrors.h cudaParamType.h cudaParams.h cudaParamsASM.h cudaSafeCall.h main.cu
+	nvcc -arch sm_11 -I . -g -o main  -D _CRT_SECURE_NO_DEPRECATE Timer.cpp main.cu cudaCallbackCoerceArguments.cpp cudaCreateHostFunc.obj pthreadVC2.lib kernel32.lib
+
+main2: Timer.obj cudaCallBackExpand.h cudaCallFunc.h cudaCallbackCoerceArguments.obj cudaCallbackConstants.h cudaCallbackData.h cudaCreateHostFunc.obj cudaHostFunction.h cudaParamCreate.h cudaParamErrors.h cudaParamType.h cudaParams.h cudaParamsASM.h cudaSafeCall.h main2.cu
+	nvcc -arch sm_11 -I . -g -o main2 -D _CRT_SECURE_NO_DEPRECATE Timer.obj main2.cu cudaCallbackCoerceArguments.obj cudaCreateHostFunc.obj pthreadVC2.lib kernel32.lib
+
+main3: Timer.obj cudaCallBackExpand.h cudaCallFunc.h cudaCallbackCoerceArguments.obj cudaCallbackConstants.h cudaCallbackData.h cudaCreateHostFunc.obj cudaHostFunction.h cudaParamCreate.h cudaParamErrors.h cudaParamType.h cudaParams.h cudaParamsASM.h cudaSafeCall.h main3.cu
+	nvcc -arch sm_11 -I . -O2 -o main3 -D _CRT_SECURE_NO_DEPRECATE Timer.obj main3.cu cudaCallbackCoerceArguments.obj cudaCreateHostFunc.obj pthreadVC2.lib kernel32.lib
+
+main4: Timer.obj cudaCallBackExpand.h cudaCallFunc.h cudaCallbackCoerceArguments.obj cudaCallbackConstants.h cudaCallbackData.h cudaCreateHostFunc.obj cudaHostFunction.h cudaParamCreate.h cudaParamErrors.h cudaParamType.h cudaParams.h cudaParamsASM.h cudaSafeCall.h main4.cu
+	nvcc -arch sm_11 -I . -O2 -o main4 -D _CRT_SECURE_NO_DEPRECATE Timer.obj main4.cu cudaCallbackCoerceArguments.obj cudaCreateHostFunc.obj pthreadVC2.lib kernel32.lib
+
+Timer.obj: Timer.h Timer.cpp
+	nvcc -arch sm_11 -I . -O2 -D _CRT_SECURE_NO_DEPRECATE -c Timer.cpp
+
+cudaCallbackCoerceArguments.obj: cudaCallbackCoerceArguments.cpp cudaParam.h cudaValue.h cudaCallbackTypes.h
+	nvcc -arch sm_11 -I . -O2 -D _CRT_SECURE_NO_DEPRECATE -c cudaCallbackCoerceArguments.cpp
+
+cudaCreateHostFunc.obj: cudaCreateHostFunc.cpp cudaParams.h
+	nvcc -arch sm_11 -I . -O2 -D _CRT_SECURE_NO_DEPRECATE -c cudaCreateHostFunc.cpp
+
+clean:
+	rm *.obj *.exe *.pdb *.ilk *.sln *.linkinfo
